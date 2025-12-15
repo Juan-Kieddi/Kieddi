@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kieddi Conversa - Google Cloud Integration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --secondary-color: #34A853;
+            --accent-color: #FBBC05;
+            --text-color: #333;
+            --bg-color: #E0E5EC;
+            --neumorph-light: #ffffff;
+            --neumorph-dark: #A3B1C6;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Neumorphism Base Styles */
+        .neumorph-card {
+            background: var(--bg-color);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 
+                8px 8px 16px var(--neumorph-dark),
+                -8px -8px 16px var(--neumorph-light);
+            transition: var(--transition);
+            margin-bottom: 30px;
+        }
+
+        .neumorph-card-inset {
+            background: var(--bg-color);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 
+                inset 3px 3px 7px var(--neumorph-dark),
+                inset -3px -3px 7px var(--neumorph-light);
+        }
+
+        .neumorph-btn {
+            background: var(--bg-color);
+            border: none;
+            border-radius: 15px;
+            padding: 12px 25px;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            box-shadow: 
+                4px 4px 8px var(--neumorph-dark),
+                -4px -4px 8px var(--neumorph-light);
+            transition: var(--transition);
+        }
+
+        .neumorph-btn:hover {
+            box-shadow: 
+                inset 3px 3px 5px var(--neumorph-dark),
+                inset -3px -3px 5px var(--neumorph-light);
+            color: var(--primary-color);
+        }
+
+        .neumorph-btn:active {
+            box-shadow: 
+                inset 4px 4px 8px var(--neumorph-dark),
+                inset -4px -4px 8px var(--neumorph-light);
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            box-shadow: 
+                4px 4px 8px var(--neumorph-dark),
+                -4px -4px 8px var(--neumorph-light);
+        }
+
+        .company-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: #555;
+        }
+
+        /* Google Cloud Integration Section */
+        .integration-title {
+            text-align: center;
+            margin: 40px 0 30px;
+            font-size: 32px;
+            color: var(--primary-color);
+        }
+
+        .google-cloud-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #4285F4;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .service-card {
+            text-align: center;
+            padding: 25px;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                12px 12px 24px var(--neumorph-dark),
+                -12px -12px 24px var(--neumorph-light);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: var(--bg-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: var(--primary-color);
+            box-shadow: 
+                4px 4px 8px var(--neumorph-dark),
+                -4px -4px 8px var(--neumorph-light);
+        }
+
+        .service-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Metrics Section */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                4px 4px 8px var(--neumorph-dark),
+                -4px -4px 8px var(--neumorph-light);
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-grid, .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 26px;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="neumorph-card">
+            <div class="logo-container">
+                <div class="logo">K</div>
+                <div class="company-name">Kieddi</div>
+            </div>
+            <div>
+                <button class="neumorph-btn" id="demoBtn">Request Demo</button>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Kieddi Conversa</h1>
+            <p>Intelligent Conversational AI Platform Powered by Google Cloud</p>
+            <p class="neumorph-card-inset" style="text-align: left; font-size: 18px; line-height: 1.8;">
+                Kieddi is a multi-agent conversational AI platform that turns customer conversations into revenue while lowering service costs. It orchestrates sales, support, knowledge and ticketing in a single thread, delivering human-like interactions 24/7 across web, WhatsApp and social.
+            </p>
+        </section>
+
+        <!-- Google Cloud Integration -->
+        <section>
+            <h2 class="integration-title">Google Cloud Integration</h2>
+            <div class="google-cloud-logo">
+                <i class="fab fa-google"></i>
+                <span>Google Cloud</span>
+            </div>
+            
+            <div class="neumorph-card">
+                <p style="font-size: 18px; text-align: center; margin-bottom: 30px;">
+                    Our solution is natively built on Google Cloud, leveraging its powerful AI and infrastructure services to deliver scalable, intelligent conversational experiences.
+                </p>
+                
+                <div class="services-grid">
+                    <!-- Vertex AI -->
+                    <div class="service-card neumorph-card">
+                        <div class="service-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="service-name">Vertex AI</h3>
+                        <p>Advanced natural language understanding and generative AI for human-like conversations</p>
+                    </div>
+                    
+                    <!-- Cloud Firestore -->
+                    <div class="service-card neumorph-card">
+                        <div class="service-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="service-name">Cloud Firestore</h3>
+                        <p>Real-time customer data storage for personalized, contextual interactions</p>
+                    </div>
+                    
+                    <!-- Cloud Run -->
+                    <div class="service-card neumorph-card">
+                        <div class="service-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3 class="service-name">Cloud Run</h3>
+                        <p>Auto-scaling microservices for 24/7 global availability and performance</p>
+                    </div>
+                    
+                    <!-- BigQuery -->
+                    <div class="service-card neumorph-card">
+                        <div class="service-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3 class="service-name">BigQuery</h3>
+                        <p>Real-time analytics and insights from customer interaction data</p>
+                    </div>
+                    
+                    <!-- Dialogflow CX -->
+                    <div class="service-card neumorph-card">
+                        <div class="service-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="service-name">Dialogflow CX</h3>
+                        <p>Advanced conversation design and omnichannel integration</p>
+                    </div>
+                    
+                    <!-- Looker Studio -->
+                    <div class="service-card neumorph-card">
+                        <div class="service-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="service-name">Looker Studio</h3>
+                        <p>Interactive dashboards for conversion, containment, and customer satisfaction metrics</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customer Outcomes -->
+        <section class="neumorph-card">
+            <h2 style="text-align: center; margin-bottom: 30px; color: var(--primary-color);">Proven Customer Outcomes</h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-card neumorph-card">
+                    <div class="metric-value">+35%</div>
+                    <div class="metric-label">Conversion Lift</div>
+                </div>
+                
+                <div class="metric-card neumorph-card">
+                    <div class="metric-value">35-55%</div>
+                    <div class="metric-label">Inquiry Containment</div>
+                </div>
+                
+                <div class="metric-card neumorph-card">
+                    <div class="metric-value">15-35%</div>
+                    <div class="metric-label">Lower Handling Time</div>
+                </div>
+                
+                <div class="metric-card neumorph-card">
+                    <div class="metric-value">24/7</div>
+                    <div class="metric-label">Automated Service</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; padding: 20px;" class="neumorph-card-inset">
+                <h3 style="color: var(--secondary-color); margin-bottom: 15px;">Value Proposition</h3>
+                <p>Kieddi automates digital sales and support processes, enabling instant responses, smart product suggestions, real-time inventory management, and automatic order creation. It converts every customer interaction into valuable data for smarter, data-driven decisions.</p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section neumorph-card">
+            <h2 style="color: var(--primary-color); margin-bottom: 20px;">Get In Touch</h2>
+            <p style="margin-bottom: 30px; font-size: 18px;">Ready to transform your customer conversations with Google Cloud-powered AI?</p>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div>
+                        <strong>Website:</strong><br>
+                        <a href="https://kieddi.cc/" target="_blank">https://kieddi.cc/</a>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <strong>Email:</strong><br>
+                        <a href="mailto:juan@kieddi.cc">juan@kieddi.cc</a>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <strong>Location:</strong><br>
+                        Argentina
+                    </div>
+                </div>
+            </div>
+            
+            <button class="neumorph-btn" style="margin-top: 30px; padding: 15px 40px; font-size: 18px;" id="contactBtn">
+                <i class="fas fa-paper-plane"></i> Contact for Solution Demo
+            </button>
+        </section>
+
+        <!-- Footer -->
+        <footer class="neumorph-card">
+            <p>Kieddi Conversa - Google Cloud Solution Qualification</p>
+            <p style="margin-top: 10px;">© 2023 Kieddi. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Interactive button effects
+        document.getElementById('demoBtn').addEventListener('click', function() {
+            alert('Thank you for your interest! Our team will contact you shortly to schedule a demo of Kieddi Conversa.');
+        });
+        
+        document.getElementById('contactBtn').addEventListener('click', function() {
+            alert('Please email us at juan@kieddi.cc to discuss our Google Cloud integrated solution and request a detailed demo.');
+        });
+        
+        // Add hover effect to service cards
+        const serviceCards = document.querySelectorAll('.service-card');
+        serviceCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Add click effect to metric cards
+        const metricCards = document.querySelectorAll('.metric-card');
+        metricCards.forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('neumorph-card-inset');
+                setTimeout(() => {
+                    this.classList.toggle('neumorph-card-inset');
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
